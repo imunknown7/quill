@@ -20,3 +20,22 @@ instead of relying on large frameworks, quill converts markdown files into stati
 - obsidian friendly workflow
 
 ## installation
+1. clone the repository
+```
+git clone https://github.com/imunknown7/quill.git
+cd quill
+```
+
+2. install dependencies
+```
+npm install
+```
+
+3. build the site
+```
+npm run build
+```
+
+4. edit your posts and host to github pages or any hosting service to view your quill blog page.
+
+NOTE : everything you edit posts or create new posts you have to run `npm build` and then go into the hosting process.
