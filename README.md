@@ -59,3 +59,12 @@ mklink /J posts "C:\path\to\ObsidianVault\posts"
 ```
 
 once the symlink is established changes in your obsidian notes will reflect in the posts directory in the quill project.
+
+## screenshots
+
+![screenshot1](assets/images/screenshot1.png)
+![screenshot2](assets/images/screenshot2.png)
+![screenshot3](assets/images/screenshot3.png)
+
+---
+<div align="right">- made by dynamo</div>
