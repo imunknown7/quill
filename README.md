@@ -42,23 +42,79 @@ npm run build
 ## writing your posts
 open the `posts/` directory and add your posts as markdown file. anytime you edit posts or create new posts you have to run `npm run build` and then go into the hosting process.
 
-## obsidian linking
-you can make use of symlink to sync your folder (within your obsidian) with the posts directory in the project.
+## syncing your obsidian posts
 
-here is symlink command in both windows and macos
-1. macos
+rather than using symbolic links, keep your obsidian vault as the source of truth and mirror the contents into quill's `posts` directory before publishing.
+
+### macOS / Linux
+
 ```bash
-cd /path/to/quill
-ln -s /path/to/ObsidianVault/posts posts
+rsync -av --delete /path/to/ObsidianVault/posts/ /path/to/quill/posts/
 ```
 
-2. windows
+### Windows
+
 ```cmd
-cd C:\path\to\quill
-mklink /J posts "C:\path\to\ObsidianVault\posts"
+robocopy "C:\path\to\ObsidianVault\posts" "C:\path\to\quill\posts" /MIR
 ```
 
-once the symlink is established changes in your obsidian notes will reflect in the posts directory in the quill project.
+both commands keep the `posts` directory inside quill synchronized with your obsidian vault:
+
+* new files are copied.
+* existing files are updated.
+* deleted files are removed from the destination.
+
+---
+
+## automating the workflow
+
+instead of manually syncing, building, and pushing every time, you can automate the entire publishing process.
+
+create a `publish.sh` script (or a `.bat`/PowerShell equivalent on Windows) in the root of your Quill project.
+
+```bash
+#!/bin/bash
+
+set -e
+
+echo "Syncing posts..."
+rsync -av --delete "/path/to/ObsidianVault/posts/" "./posts/"
+
+echo "Building..."
+node js/build.js
+
+echo "Committing..."
+git add .
+git commit -m "Update writings" || true
+
+echo "Pushing..."
+git push
+
+echo "Done."
+```
+
+after making the script executable:
+
+```bash
+chmod +x publish.sh
+```
+
+publishing your blog becomes as simple as:
+
+```bash
+./publish.sh
+```
+
+the script will:
+
+1. synchronize your obsidian posts with quill.
+2. rebuild the site.
+3. stage all changes.
+4. commit them.
+5. push everything to GitHub.
+
+this keeps your obsidian vault as your writing workspace while quill remains the publishable version of your blog.
+
 
 ## screenshots
 
